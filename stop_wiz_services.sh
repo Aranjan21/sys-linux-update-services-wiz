@@ -7,7 +7,7 @@ cat <<EOF > remote.sh
 # Set the PATH and TERM because piping a script to sshpass via STDIN does not initialize a terminal
 export PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
 export TERM=xterm
-#!/bin/bash
+
 sudo initctl list |grep running| grep -v tty | awk '{print $1}' > /tmp/services.txt
 echo `cat /tmp/services.txt`
 #sudo cat services.txt
