@@ -9,7 +9,7 @@ export PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
 export TERM=xterm
 
 sudo initctl list| grep -v tty | awk '{print $1}' > /tmp/services.txt
-echo `cat /tmp/services.txt`
+echo `sudo cat /tmp/services.txt`
 #sudo cat services.txt
 #failed_service=()
 #while read line; do
