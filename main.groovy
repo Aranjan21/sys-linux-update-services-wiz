@@ -59,7 +59,7 @@ def call(def base) {
 
 def input_validation() {
     def output = [
-        'response': 'error',
+        'response': 'ok',
         'message': ''
     ]
 
