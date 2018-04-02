@@ -8,8 +8,8 @@ cat <<EOF > remote.sh
 export PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
 export TERM=xterm
 #!/bin/bash
-initctl list |grep running| grep -v tty | awk '{print $1}' > services.txt
-echo `cat services.txt`
+sudo initctl list |grep running| grep -v tty | awk '{print $1}' > /tmp/services.txt
+echo `cat /tmp/services.txt`
 #sudo cat services.txt
 #failed_service=()
 #while read line; do
