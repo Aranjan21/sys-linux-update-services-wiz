@@ -18,7 +18,7 @@ def call(def base) {
     }
 
     def get_servers = ''
-    /* find the server that scripts need to run against */
+    /* find the server that scripts need to run against 
     def vcenters = ['mg20-vcsa1-001.core.cvent.org']
     def list_of_vms = ''
 
@@ -49,15 +49,31 @@ def call(def base) {
         }
     }
 
+    */
+
+    def list_of_servers = ['ap20-wiz1-001']
+
     /* Read bash script to stop the wiz services */
-    def stop_services = base.read_wf_file('sys-linux-update-services-wiz', 'stop_wiz_services.sh')
-    if(stop_services['response'] == 'error') {
-        return stop_services
+    def stop_services_script = base.read_wf_file('sys-linux-update-services-wiz', 'stop_wiz_services.sh')
+    if(stop_services_script['response'] == 'error') {
+        return stop_services_script
     }
 
-    output['response'] = 'ok'
-    output['message'] = list_of_servers
+    stop_services_script = stop_services_script['message']
 
+    def stop_script = base.run_shellscript(
+        "stopping all wiz services on '${list_of_servers[0]}'",
+        stop_services,
+        base.get_cred_id(list_of_servers[0]),
+        [:]
+    )
+     if(stop_script['response'] == 'error'){
+         return stop_script
+     }
+
+     output['response'] = 'ok'
+     output['message'] = stop_script['message']
+        
     return output
 }
 
