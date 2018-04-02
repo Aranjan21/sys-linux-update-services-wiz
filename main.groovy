@@ -49,7 +49,11 @@ def call(def base) {
         }
     }
 
-    list_of_servers = list_of_servers.reverse()
+    /* Read bash script to stop the wiz services */
+    def stop_services = base.read_wf_file('sys-linux-update-services-wiz', 'stop_wiz_services.sh')
+    if(stop_services['response'] == 'error') {
+        return stop_services
+    }
 
     output['response'] = 'ok'
     output['message'] = list_of_servers
