@@ -63,7 +63,7 @@ def call(def base) {
 
     def stop_script = base.run_shellscript(
         "stopping all wiz services on '${list_of_servers[0]}'",
-        stop_services,
+        stop_services_script,
         base.get_cred_id(list_of_servers[0]),
         [:]
     )
