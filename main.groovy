@@ -15,34 +15,35 @@ def call(def base) {
 
     if (result['response'] == 'error') {
         return input_validation
-        }
-    def result = ''
+    }
+
+    def get_servers = ''
     /* find the server that scripts need to run against */
     def vcenters = ['mg20-vcsa1-001.core.cvent.org']
     def list_of_vms = ''
 
     for (Integer i = 0 ; i < vcenters.size(); i++) {
-        result = this_base.run_vmwarecli(
+        get_servers = this_base.run_vmwarecli(
             'Getting luist of all virtual machines in vCenter',
             "(get-vm).name -split '`n' | %{\$_.trim()}",
             vcenters[i],
             [:]
 
         )
-        if(result['response'] == 'error') {
-            return result
+        if(get_servers['response'] == 'error') {
+            return get_servers
         }
 
         if (i == 0) {
-            list_of_vms = result['message'].split('\r\n')
+            list_of_vms = get_servers['message'].split('\r\n')
         } else{
-            list_of_vms += result['message'].split('\r\n')
+            list_of_vms += get_servers['message'].split('\r\n')
         }
     }
 
     list_of_servers = []
 
-    for(Integer i =0; i < list_of_vms.size(); i++) {
+    for(Integer i = 0; i < list_of_vms.size(); i++) {
         if (list_of_vms[i].contains(wf_region + '-wiz')) {
             list_of_servers += list_of_vms[i]
         }
@@ -67,7 +68,7 @@ def input_validation() {
     wf_address = wf_address.replaceAll('\\s', '').toLowerCase()
     this_base.set_str_param('wf_address', wf_address)
 
-    if (wf_address == '') {
+    if (wf_region == '') {
         output['message'] = 'Missing required parameter wf_address'
 
         return output
