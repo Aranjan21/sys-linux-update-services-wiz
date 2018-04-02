@@ -9,17 +9,18 @@ export PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
 export TERM=xterm
 #!/bin/bash
 initctl list |grep running| grep -v tty | awk '{print $1}' > services.txt
+echo `cat services.txt`
+#sudo cat services.txt
+#failed_service=()
+#while read line; do
+#initctl stop $line
+#serv=`initctl status $line`
+#        if [[ $serv != *"start"* ]]; then
+#                       failed_service+=("$line")
+#         fi
+#done < "services.txt"
+#echo "List of all failed service"$'\n'"$failed_service"
 
-sudo cat services.txt
-failed_service=()
-while read line; do
-initctl stop $line
-serv=`initctl status $line`
-        if [[ $serv != *"start"* ]]; then
-                        failed_service+=("$line")
-         fi
-done < "services.txt"
-echo "List of all failed service"$'\n'"$failed_service"
 
 EOF
  
