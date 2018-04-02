@@ -51,7 +51,7 @@ def call(def base) {
 
     */
 
-    def list_of_servers = ['ap20-wiz1-001.core.cvent.org']
+    def list_of_servers = ['bh20-cpslin-046']
 
     /* Read bash script to stop the wiz services */
     def stop_services_script = base.read_wf_file('sys-linux-update-services-wiz', 'stop_wiz_services.sh')
@@ -64,7 +64,7 @@ def call(def base) {
     def stop_script = base.run_shellscript(
         "stopping all wiz services on '${list_of_servers[0]}'",
         stop_services_script,
-        base.get_cred_id('ap20-wiz1-001.core.cvent.org'),
+        base.get_cred_id('bh20-cpslin-046'),
         [:]
     )
      if(stop_script['response'] == 'error'){
