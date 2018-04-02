@@ -3,14 +3,7 @@
 /* Created by: Abhishek Ranjan */
 
 def call(def base) {
-    /* The 'call(def base)' method is the script (ie. workflow / pipeline / job) that will run
-       'call(def base)' must return a Map with two keys: 1) 'response' 2) 'message'
-       The only two valid values for 'response' are: 1) 'ok' 2) 'error'
-       The 'message' key must be a String if 'response' is 'error'
-       The 'message' key may be any serializable object if 'response' is 'ok'
-       See the standards here: https://wiki.cvent.com/pages/viewpage.action?pageId=50965437 */
-
-    this_base = base
+        this_base = base
     def glob_objs = this_base.get_glob_objs()
     def output = [
         'response': 'error',
@@ -21,8 +14,44 @@ def call(def base) {
     def result = this.input_validation()
 
     if (result['response'] == 'error') {
-        return result
+        return input_validation
+        }
+    def result = ''
+    /* find the server that scripts need to run against */
+    def vcenters = ['mg20-vcsa1-001.core.cvent.org']
+    def list_of_vms = ''
+
+    for (Integer i = 0 ; i < vcenters.size(); i++) {
+        result = this_base.run_vmwarecli(
+            'Getting luist of all virtual machines in vCenter',
+            "(get-vm).name -split '`n' | %{\$_.trim()}",
+            vcenters[i],
+            [:]
+
+        )
+        if(result['response'] == 'error') {
+            return result
+        }
+
+        if (i == 0) {
+            list_of_vms = result['message'].split('\r\n')
+        } else{
+            list_of_vms += result['message'].split('\r\n')
+        }
     }
+
+    list_of_servers = []
+
+    for(integer i =0; i < list_of_vms.size(); i++) {
+        if (list_of_vms[i].contains(wf_region + '-wiz')) {
+            list_of_servers += list_of_vms[i]
+        }
+    }
+
+    list_of_servers = list_of_servers.reverse()
+
+    output['response'] = 'ok'
+    output['message'] = list_of_servers
 
     return output
 }
