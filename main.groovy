@@ -65,7 +65,9 @@ def call(def base) {
         "stopping all wiz services on '${list_of_servers[0]}'",
         stop_services_script,
         base.get_cred_id('bh20-cpslin-046'),
-        [:]
+        [
+            '_address_' : list_of_servers[0]
+        ]
     )
      if(stop_script['response'] == 'error'){
          return stop_script
