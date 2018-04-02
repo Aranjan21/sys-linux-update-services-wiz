@@ -42,7 +42,7 @@ def call(def base) {
 
     list_of_servers = []
 
-    for(integer i =0; i < list_of_vms.size(); i++) {
+    for(Integer i =0; i < list_of_vms.size(); i++) {
         if (list_of_vms[i].contains(wf_region + '-wiz')) {
             list_of_servers += list_of_vms[i]
         }
