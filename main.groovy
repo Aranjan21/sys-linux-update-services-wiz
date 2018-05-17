@@ -24,7 +24,7 @@ def call(def base) {
 
     for (Integer i = 0 ; i < vcenters.size(); i++) {
         get_servers = this_base.run_vmwarecli(
-            'Getting luist of all virtual machines in vCenter',
+            'Getting list of all virtual machines in vCenter',
             "(get-vm).name -split '`n' | %{\$_.trim()}",
             vcenters[i],
             [:]
@@ -48,7 +48,7 @@ def call(def base) {
             list_of_servers += list_of_vms[i]
         }
     }
-
+    list_of_servers = list_of_servers.reverse()
     */
 
     def list_of_servers = ['bh20-cpslin-046']
